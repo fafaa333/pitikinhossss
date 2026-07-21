@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#9B5A2E"
+<title>Pitikinhos • Login</title>
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+<div class="background">
+<div class="paw paw-top-left"></div>
+<div class="paw paw-top-right"></div>
+<div class="paw paw-bottom-left"></div>
+<div class="paw paw-bottom-right"></div>
+</div>
+<main class="login-page">
+<section class="login-card">
+<div class="logo-box">
+<img src="img/logo.png" class="logo" alt="Logo Pitikinhos">
+</div>
+<h1>Pitikinhos</h1>
+<p class="subtitle">Sistema de Pedidos</p>
+<p class="description">Faça login para acessar o sistema.</p>
+<form id="loginForm">
+<div class="input-group">
+<label>E-mail</label>
+<div class="input-icon">
+<i class="fa-solid fa-envelope"></i>
+<input type="email" id="email" placeholder="Digite seu e-mail" required>
+</div>
+</div>
+<div class="input-group">
+<label>Senha</label>
+<div class="input-icon">
+<i class="fa-solid fa-lock"></i>
+<input type="password" id="senha" placeholder="Digite sua senha" required>
+</div>
+</div>
+<div class="remember">
+<label><input type="checkbox"> Lembrar acesso</label>
+<a href="#">Esqueci minha senha</a>
+</div>
+<button class="btn-login" type="submit">Entrar</button>
+</form>
+<footer>© 2026 Pitikinhos • Sistema de Pedidos</footer>
+</section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
