@@ -1,600 +1,555 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap');
 
+/* ==========================================================
+   VARIÁVEIS
+========================================================== */
+
 :root{
+
     --primary:#9B5A2E;
     --primary-dark:#7B431F;
+
     --bg:#F8F3EC;
     --card:#FFFFFF;
+
     --text:#5C3A22;
     --muted:#8F7866;
+
     --border:#E9D9C9;
+
     --shadow:0 15px 35px rgba(83,52,31,.12);
+
     --radius:22px;
+
+    --transition:.25s ease;
+
 }
 
+/* ==========================================================
+   RESET
+========================================================== */
+
 *{
+
     margin:0;
     padding:0;
     box-sizing:border-box;
+
+}
+
+html{
+
+    scroll-behavior:smooth;
+
 }
 
 body{
+
     font-family:'Nunito',sans-serif;
-    background:linear-gradient(180deg,#FFFDFB,#F8F3EC);
+
+    background:linear-gradient(
+        180deg,
+        #FFFDFB,
+        #F8F3EC
+    );
+
     color:var(--text);
+
     min-height:100vh;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
 
     overflow-x:hidden;
 
 }
 
-/* ===========================================================
+/* ==========================================================
    BACKGROUND
-=========================================================== */
+========================================================== */
 
 .background{
+
     position:fixed;
+
     inset:0;
-    pointer-events:none;
+
     overflow:hidden;
+
+    pointer-events:none;
+
     z-index:-1;
+
 }
 
-/* Patas */
+/* ==========================================================
+   PATAS
+========================================================== */
 
 .paw{
-    position:absolute;
-    width:95px;
-    height:95px;
-    opacity:.10;
-    background:url("img/pata.png") center/contain no-repeat;
-    filter:blur(.2px);
 
+    position:absolute;
+
+    width:95px;
+
+    height:95px;
+
+    opacity:.10;
+
+    background:url("img/pata.png") center center/contain no-repeat;
+
+    animation:pawFloat 7s ease-in-out infinite;
 
 }
 
-/* Patas originais */
+/* Cantos */
 
 .paw-top-left{
+
     top:40px;
     left:40px;
+
     transform:rotate(-18deg);
+
 }
 
 .paw-top-right{
-    top:55px;
+
+    top:50px;
     right:60px;
+
     transform:rotate(18deg);
+
 }
 
 .paw-bottom-left{
+
     bottom:45px;
-    left:60px;
+    left:55px;
+
     transform:rotate(-10deg);
+
 }
 
 .paw-bottom-right{
-    bottom:55px;
+
+    bottom:50px;
     right:45px;
+
     transform:rotate(12deg);
+
 }
 
-/* Novas patas */
+/* Extras */
 
 .paw:nth-child(5){
+
     top:18%;
     left:22%;
+
     transform:rotate(-30deg) scale(.75);
+
 }
 
 .paw:nth-child(6){
+
     top:28%;
     right:18%;
+
     transform:rotate(35deg) scale(.85);
+
 }
 
 .paw:nth-child(7){
+
     top:50%;
     left:8%;
-    transform:rotate(-12deg) scale(.7);
+
+    transform:rotate(-12deg) scale(.70);
+
 }
 
 .paw:nth-child(8){
+
     top:48%;
     right:8%;
-    transform:rotate(25deg) scale(.8);
+
+    transform:rotate(25deg) scale(.80);
+
 }
 
 .paw:nth-child(9){
+
     bottom:22%;
     left:30%;
+
     transform:rotate(-25deg) scale(.72);
+
 }
 
 .paw:nth-child(10){
+
     bottom:28%;
     right:24%;
-    transform:rotate(20deg) scale(.9);
+
+    transform:rotate(20deg) scale(.90);
+
 }
 
 .paw:nth-child(11){
+
     top:8%;
     left:48%;
+
     transform:rotate(10deg) scale(.65);
+
 }
 
 .paw:nth-child(12){
+
     bottom:8%;
     left:48%;
-    transform:rotate(-18deg) scale(.8);
+
+    transform:rotate(-18deg) scale(.80);
+
 }
+
+/* ==========================================================
+   ANIMAÇÕES
+========================================================== */
 
 @keyframes pawFloat{
 
     0%{
+
         transform:translateY(0);
+
     }
 
     50%{
+
         transform:translateY(-8px);
+
     }
 
     100%{
+
         transform:translateY(0);
+
     }
 
-}
-
-.login-page{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    min-height:100vh;
-    padding:30px;
-}
-
-.login-card{
-    width:100%;
-    max-width:440px;
-    background:rgba(255,255,255,.95);
-    border:1px solid rgba(255,255,255,.7);
-    border-radius:30px;
-    box-shadow:var(--shadow);
-    padding:42px;
-    backdrop-filter:blur(10px);
-    animation:fade .6s ease;
-}
-
-.logo-box{
-    width:120px;
-    height:120px;
-    margin:0 auto 24px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    border-radius:30px;
-    background:#fff;
-    box-shadow:0 10px 25px rgba(0,0,0,.08);
-}
-
-.logo{
-    width:90px;
-    animation:float 4s ease-in-out infinite;
-}
-
-h1{
-    text-align:center;
-    font-size:34px;
-    margin-bottom:6px;
-    font-weight:800;
-}
-
-.subtitle{
-    text-align:center;
-    color:var(--primary);
-    font-weight:700;
-    margin-bottom:8px;
-}
-
-.description{
-    text-align:center;
-    color:var(--muted);
-    margin-bottom:28px;
-}
-
-.input-group{margin-bottom:20px;}
-
-.input-group label{
-    display:block;
-    margin-bottom:8px;
-    font-weight:700;
-}
-
-.input-icon{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    border:1px solid var(--border);
-    border-radius:16px;
-    padding:0 16px;
-    background:#fff;
-    transition:.25s;
-}
-
-.input-icon:focus-within{
-    border-color:var(--primary);
-    box-shadow:0 0 0 4px rgba(155,90,46,.15);
-}
-
-.input-icon i{
-    color:var(--primary);
-    font-size:18px;
-}
-
-.input-icon input{
-    flex:1;
-    border:none;
-    outline:none;
-    background:transparent;
-    padding:16px 0;
-    font-size:15px;
-    color:var(--text);
-}
-
-.remember{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin:22px 0;
-    font-size:14px;
-}
-
-.remember label{
-    display:flex;
-    align-items:center;
-    gap:8px;
-}
-
-.remember a{
-    text-decoration:none;
-    color:var(--primary);
-    font-weight:700;
-}
-
-.btn-login{
-    width:100%;
-    padding:16px;
-    border:none;
-    border-radius:16px;
-    background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-    color:#fff;
-    font-size:17px;
-    font-weight:800;
-    cursor:pointer;
-    transition:.25s;
-    box-shadow:0 10px 25px rgba(155,90,46,.25);
-}
-
-.btn-login:hover{
-    transform:translateY(-3px);
-    box-shadow:0 16px 30px rgba(155,90,46,.35);
-}
-
-footer{
-    margin-top:28px;
-    text-align:center;
-    color:var(--muted);
-    font-size:13px;
 }
 
 @keyframes float{
-    50%{transform:translateY(-8px);}
+
+    50%{
+
+        transform:translateY(-8px);
+
+    }
+
 }
 
 @keyframes fade{
-    from{opacity:0;transform:translateY(20px);}
-    to{opacity:1;transform:translateY(0);}
-}
 
-@media(max-width:600px){
-    .login-card{
-        padding:28px;
-        border-radius:24px;
-    }
-    h1{font-size:28px;}
-}
-/* ===========================================================
-   RESPONSIVIDADE
-=========================================================== */
+    from{
 
-/* Notebook */
-
-@media (max-width: 1200px){
-
-    .login-card{
-        max-width:460px;
-    }
-
-}
-
-
-/* Tablet */
-
-@media (max-width: 992px){
-
-    body{
-
-        padding:20px;
+        opacity:0;
+        transform:translateY(20px);
 
     }
 
-    .login-page{
+    to{
 
-        padding:20px;
-
-    }
-
-    .login-card{
-
-        width:100%;
-
-        max-width:500px;
+        opacity:1;
+        transform:translateY(0);
 
     }
 
 }
+/* ==========================================================
+   LOGIN
+========================================================== */
 
+.login-page{
 
-/* Celulares */
+    min-height:100vh;
 
-@media (max-width:768px){
+    display:flex;
 
-    body{
+    justify-content:center;
 
-        padding:15px;
+    align-items:center;
 
-    }
-
-    .login-page{
-
-        padding:15px;
-
-    }
-
-    .login-card{
-
-        width:100%;
-
-        max-width:100%;
-
-        padding:30px 25px;
-
-        border-radius:22px;
-
-    }
-
-    .logo-box{
-
-        width:100px;
-
-        height:100px;
-
-        margin-bottom:20px;
-
-    }
-
-    .logo{
-
-        width:75px;
-
-    }
-
-    h1{
-
-        font-size:30px;
-
-    }
-
-    .subtitle{
-
-        font-size:18px;
-
-    }
-
-    .description{
-
-        font-size:15px;
-
-        margin-bottom:25px;
-
-    }
-
-    .input-group{
-
-        margin-bottom:18px;
-
-    }
-
-    .input-icon{
-
-        padding:0 14px;
-
-    }
-
-    .input-icon input{
-
-        font-size:15px;
-
-        padding:15px 0;
-
-    }
-
-    .remember{
-
-        flex-direction:column;
-
-        align-items:flex-start;
-
-        gap:12px;
-
-    }
-
-    .btn-login{
-
-        padding:15px;
-
-        font-size:18px;
-
-    }
+    padding:30px;
 
 }
 
+.login-card{
 
-/* iPhone SE / Galaxy A01 */
-
-@media (max-width:480px){
-
-    body{
-
-        padding:10px;
-
-    }
-
-    .login-card{
-
-        padding:25px 20px;
-
-        border-radius:20px;
-
-    }
-
-    .logo-box{
-
-        width:90px;
-
-        height:90px;
-
-    }
-
-    .logo{
-
-        width:65px;
-
-    }
-
-    h1{
-
-        font-size:26px;
-
-    }
-
-    .subtitle{
-
-        font-size:17px;
-
-    }
-
-    .description{
-
-        font-size:14px;
-
-    }
-
-    .input-group label{
-
-        font-size:14px;
-
-    }
-
-    .input-icon{
-
-        border-radius:14px;
-
-    }
-
-    .input-icon input{
-
-        font-size:14px;
-
-    }
-
-    .btn-login{
-
-        font-size:17px;
-
-        padding:14px;
-
-    }
-
-    footer{
-
-        font-size:12px;
-
-    }
-
-}
-
-
-/* Celulares muito pequenos */
-
-@media (max-width:360px){
-
-    .login-card{
-
-        padding:18px;
-
-    }
-
-    h1{
-
-        font-size:23px;
-
-    }
-
-    .subtitle{
-
-        font-size:15px;
-
-    }
-
-    .btn-login{
-
-        font-size:16px;
-
-    }
-
-}
-.logo-login{
-    width:100px;
-    height:auto;
-    display:block;
-    margin:0 auto 20px;
-    animation:float 4s ease-in-out infinite;
-}
-
-
-.card-form{
-
-    background:#ffffff;
     width:100%;
-    max-width:760px;
-    margin:35px auto;
-    padding:45px;
-    border-radius:26px;
-    box-shadow:0 12px 35px rgba(0,0,0,.08);
-    border:1px solid #EADFD5;
+
+    max-width:450px;
+
+    background:rgba(255,255,255,.95);
+
+    border-radius:30px;
+
+    padding:42px;
+
+    border:1px solid rgba(255,255,255,.70);
+
+    box-shadow:var(--shadow);
+
+    backdrop-filter:blur(10px);
+
+    animation:fade .6s ease;
 
 }
-/* ============================
-   NOVO ORÇAMENTO
-============================ */
+
+.logo-box{
+
+    width:120px;
+
+    height:120px;
+
+    margin:0 auto 25px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    border-radius:30px;
+
+    background:#FFF;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+}
+
+.logo{
+
+    width:90px;
+
+    animation:float 4s ease-in-out infinite;
+
+}
+
+.logo-login{
+
+    width:100px;
+
+    display:block;
+
+    margin:0 auto 20px;
+
+    animation:float 4s ease-in-out infinite;
+
+}
+
+h1{
+
+    font-size:34px;
+
+    font-weight:800;
+
+    text-align:center;
+
+    margin-bottom:6px;
+
+}
+
+.subtitle{
+
+    text-align:center;
+
+    color:var(--primary);
+
+    font-weight:700;
+
+    margin-bottom:8px;
+
+}
+
+.description{
+
+    text-align:center;
+
+    color:var(--muted);
+
+    margin-bottom:30px;
+
+}
+
+/* ==========================================================
+   CAMPOS LOGIN
+========================================================== */
+
+.input-group{
+
+    display:flex;
+
+    flex-direction:column;
+
+    margin-bottom:20px;
+
+}
+
+.input-group label{
+
+    font-weight:700;
+
+    margin-bottom:8px;
+
+}
+
+.input-icon{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    background:#FFF;
+
+    border:1px solid var(--border);
+
+    border-radius:16px;
+
+    padding:0 16px;
+
+    transition:var(--transition);
+
+}
+
+.input-icon:focus-within{
+
+    border-color:var(--primary);
+
+    box-shadow:0 0 0 4px rgba(155,90,46,.15);
+
+}
+
+.input-icon i{
+
+    color:var(--primary);
+
+    font-size:18px;
+
+}
+
+.input-icon input{
+
+    flex:1;
+
+    border:none;
+
+    outline:none;
+
+    background:transparent;
+
+    padding:16px 0;
+
+    font-size:15px;
+
+    color:var(--text);
+
+}
+
+/* ==========================================================
+   LEMBRAR SENHA
+========================================================== */
+
+.remember{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin:22px 0;
+
+    font-size:14px;
+
+}
+
+.remember label{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+}
+
+.remember a{
+
+    text-decoration:none;
+
+    color:var(--primary);
+
+    font-weight:700;
+
+}
+
+/* ==========================================================
+   BOTÃO LOGIN
+========================================================== */
+
+.btn-login{
+
+    width:100%;
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:16px;
+
+    background:linear-gradient(
+        135deg,
+        var(--primary),
+        var(--primary-dark)
+    );
+
+    color:#FFF;
+
+    font-size:17px;
+
+    font-weight:800;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    box-shadow:0 10px 25px rgba(155,90,46,.25);
+
+}
+
+.btn-login:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 15px 30px rgba(155,90,46,.35);
+
+}
+
+footer{
+
+    margin-top:30px;
+
+    text-align:center;
+
+    color:var(--muted);
+
+    font-size:13px;
+
+}
+/* ==========================================================
+   NOVO PEDIDO
+========================================================== */
 
 .container{
 
@@ -602,21 +557,215 @@ footer{
 
     margin:40px auto;
 
+    display:flex;
+
+    flex-direction:column;
+
+    gap:25px;
+
 }
+
+/* ==========================================================
+   CABEÇALHO
+========================================================== */
+
+.topbar{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:20px;
+
+}
+
+.logo-area{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+}
+
+.logo-area .logo{
+
+    width:80px;
+
+    height:auto;
+
+}
+
+.logo-area h1{
+
+    margin:0;
+
+    font-size:32px;
+
+    color:var(--text);
+
+    text-align:left;
+
+}
+
+.logo-area p{
+
+    margin-top:5px;
+
+    color:var(--muted);
+
+    font-size:15px;
+
+}
+
+.pedido-info{
+
+    background:#FFF;
+
+    padding:16px 24px;
+
+    border-radius:18px;
+
+    border:1px solid var(--border);
+
+    box-shadow:0 10px 25px rgba(0,0,0,.05);
+
+    text-align:center;
+
+}
+
+.pedido-info span{
+
+    display:block;
+
+    font-size:13px;
+
+    color:var(--muted);
+
+}
+
+.pedido-info strong{
+
+    display:block;
+
+    margin-top:4px;
+
+    font-size:22px;
+
+    color:var(--primary);
+
+}
+
+/* ==========================================================
+   PROGRESSO
+========================================================== */
+
+.progress{
+
+    width:100%;
+
+    height:10px;
+
+    background:#EADFD5;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+}
+
+.progress-fill{
+
+    height:100%;
+
+    background:linear-gradient(90deg,var(--primary),var(--primary-dark));
+
+    border-radius:20px;
+
+    transition:.4s;
+
+}
+
+/* ==========================================================
+   ETAPAS
+========================================================== */
+
+.steps{
+
+    display:flex;
+
+    gap:15px;
+
+}
+
+.step{
+
+    flex:1;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:16px;
+
+    background:#F3E8DE;
+
+    color:#6A442C;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.step.active{
+
+    background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+
+    color:#FFF;
+
+}
+
+.step:hover{
+
+    transform:translateY(-2px);
+
+}
+
+/* ==========================================================
+   CARD
+========================================================== */
 
 .card{
 
     width:100%;
 
-    background:#fff;
+    background:#FFF;
 
     border-radius:24px;
 
     padding:40px;
 
-    box-shadow:0 15px 35px rgba(0,0,0,.08);
+    border:1px solid var(--border);
 
-    border:1px solid #E9D9C9;
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
+
+}
+
+.card h2{
+
+    font-size:30px;
+
+    margin-bottom:30px;
+
+    color:var(--text);
 
 }
 
@@ -626,15 +775,17 @@ footer{
 
 }
 
+/* ==========================================================
+   FORMULÁRIO
+========================================================== */
+
 .form-grid{
 
     display:grid;
 
-    grid-template-columns:1fr 1fr;
+    grid-template-columns:repeat(2,minmax(0,1fr));
 
-    gap:24px;
-
-    margin-top:30px;
+    gap:22px;
 
 }
 
@@ -654,11 +805,9 @@ footer{
 
 .input-group label{
 
-    font-size:15px;
+    margin-bottom:8px;
 
     font-weight:700;
-
-    margin-bottom:8px;
 
     color:#65412A;
 
@@ -669,13 +818,13 @@ footer{
 
     width:100%;
 
-    padding:16px 18px;
+    padding:16px;
 
-    font-size:16px;
+    border:1px solid #D9C9BA;
 
     border-radius:14px;
 
-    border:1px solid #D8C8BA;
+    font-size:16px;
 
     transition:.25s;
 
@@ -683,13 +832,13 @@ footer{
 
 .input-group input{
 
-    height:58px;
+    height:56px;
 
 }
 
 .input-group textarea{
 
-    min-height:140px;
+    min-height:150px;
 
     resize:vertical;
 
@@ -700,11 +849,15 @@ footer{
 
     outline:none;
 
-    border-color:#9B5A2E;
+    border-color:var(--primary);
 
-    box-shadow:0 0 0 5px rgba(155,90,46,.15);
+    box-shadow:0 0 0 4px rgba(155,90,46,.15);
 
 }
+
+/* ==========================================================
+   BOTÕES
+========================================================== */
 
 .buttons{
 
@@ -712,79 +865,337 @@ footer{
 
     justify-content:flex-end;
 
+    gap:15px;
+
     margin-top:35px;
 
 }
-/* ==========================
-   MOBILE
-========================== */
 
-@media screen and (max-width:768px){
+.buttons button,
+.btn-next{
+
+    padding:15px 28px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+
+    color:#FFF;
+
+    font-size:16px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.buttons button:hover,
+.btn-next:hover{
+
+    transform:translateY(-2px);
+
+}
+
+/* ==========================================================
+   TABELA
+========================================================== */
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    margin-top:20px;
+
+}
+
+th{
+
+    background:#F4E8DE;
+
+    color:var(--primary);
+
+}
+
+th,
+td{
+
+    padding:14px;
+
+    text-align:left;
+
+    border-bottom:1px solid #EFE3D8;
+
+}
+/* ==========================================================
+   RESPONSIVIDADE - NOVO PEDIDO
+========================================================== */
+
+/* Notebook */
+@media (max-width:1200px){
 
     .container{
-        width:100% !important;
-        padding:15px !important;
-        margin:0 auto !important;
+        width:96%;
+    }
+
+}
+
+/* Tablet */
+@media (max-width:992px){
+
+    .container{
+        width:96%;
     }
 
     .topbar{
-        flex-direction:column !important;
-        align-items:center !important;
-        text-align:center;
-        gap:15px;
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
     }
 
-    .logo-area{
-        flex-direction:column;
-        text-align:center;
+    .pedido-info{
+
+        width:100%;
+
     }
 
     .steps{
-        display:flex;
-        flex-direction:column !important;
-        gap:10px;
+
+        flex-wrap:wrap;
+
     }
 
     .step{
+
+        min-width:180px;
+
+    }
+
+}
+
+/* Celular */
+@media (max-width:768px){
+
+    body{
+
+        display:block;
+
+        padding:15px;
+
+    }
+
+    .container{
+
         width:100%;
+
+        max-width:100%;
+
+        margin:0;
+
+        padding:0;
+
+    }
+
+    .topbar{
+
+        flex-direction:column;
+
+        align-items:center;
+
+        text-align:center;
+
+        gap:20px;
+
+    }
+
+    .logo-area{
+
+        flex-direction:column;
+
+        text-align:center;
+
+    }
+
+    .logo-area .logo{
+
+        width:70px;
+
+    }
+
+    .logo-area h1{
+
+        text-align:center;
+
+        font-size:28px;
+
+    }
+
+    .logo-area p{
+
+        text-align:center;
+
+    }
+
+    .pedido-info{
+
+        width:100%;
+
+    }
+
+    .steps{
+
+        flex-direction:column;
+
+        gap:12px;
+
+    }
+
+    .step{
+
+        width:100%;
+
     }
 
     .card{
-        width:100% !important;
-        padding:25px !important;
+
+        padding:22px;
+
+        border-radius:18px;
+
     }
 
-    .card-form{
-        width:100% !important;
-        padding:0 !important;
+    .card h2{
+
+        font-size:26px;
+
     }
 
     .form-grid{
-        display:grid !important;
-        grid-template-columns:1fr !important;
-        gap:18px;
+
+        grid-template-columns:1fr;
+
     }
 
-    .input-group,
     .input-group.full{
-        grid-column:auto !important;
-        width:100%;
+
+        grid-column:auto;
+
     }
 
-    .input-group input,
+    .input-group input{
+
+        height:54px;
+
+    }
+
     .input-group textarea{
-        width:100%;
-        font-size:16px;
+
+        min-height:130px;
+
     }
 
     .buttons{
-        display:flex;
+
         flex-direction:column;
-        gap:10px;
+
     }
 
-    .buttons button{
+    .buttons button,
+
+    .btn-next{
+
         width:100%;
+
+    }
+
+    table{
+
+        display:block;
+
+        overflow-x:auto;
+
+        white-space:nowrap;
+
+    }
+
+}
+
+/* iPhone */
+@media (max-width:480px){
+
+    body{
+
+        padding:10px;
+
+    }
+
+    .logo-area .logo{
+
+        width:60px;
+
+    }
+
+    .logo-area h1{
+
+        font-size:24px;
+
+    }
+
+    .card{
+
+        padding:18px;
+
+    }
+
+    .card h2{
+
+        font-size:22px;
+
+    }
+
+    .pedido-info strong{
+
+        font-size:18px;
+
+    }
+
+    .input-group input,
+
+    .input-group textarea{
+
+        font-size:15px;
+
+    }
+
+}
+
+/* iPhone SE */
+@media (max-width:360px){
+
+    .card{
+
+        padding:15px;
+
+    }
+
+    .logo-area h1{
+
+        font-size:21px;
+
+    }
+
+    .step{
+
+        font-size:14px;
+
     }
 
 }
