@@ -833,6 +833,7 @@ footer{
 .input-group input{
 
     height:56px;
+    
 
 }
 
@@ -844,14 +845,23 @@ footer{
 
 }
 
-.input-group input:focus,
-.input-group textarea:focus{
+.input-group input,
+.input-group textarea,
+.input-group select{
 
-    outline:none;
+    width:100%;
 
-    border-color:var(--primary);
+    padding:16px;
 
-    box-shadow:0 0 0 4px rgba(155,90,46,.15);
+    border:1px solid #D9C9BA;
+
+    border-radius:14px;
+
+    font-size:16px;
+
+    transition:.25s;
+
+    background:#FFF;
 
 }
 

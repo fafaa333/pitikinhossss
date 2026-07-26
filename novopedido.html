@@ -115,18 +115,55 @@ Próximo →
 <div class="form-grid">
 
 <div class="input-group">
-<label>Produto</label>
-<input id="produto" type="text">
+<label>Modelo</label>
+<select id="produto" onchange="atualizarProduto()">
+
+    <option value="">Selecione o modelo</option>
+
+    <option>Roupa Pós Cirúrgica Sem Embalagem</option>
+
+    <option>Roupa Pós Cirúrgica Embalagem Simples</option>
+
+    <option>Roupa Pós Cirúrgica Embalagem com Botão</option>
+
+</select>
 </div>
 
 <div class="input-group">
-<label>Categoria</label>
-<input id="categoria" type="text">
+<label>Sexo</label>
+<select id="Sexo">
+ <option value="">Selecione o Sexo</option>
+
+    <option>Macho</option>
+
+    <option>Fêmea</option>
+</select>
 </div>
 
 <div class="input-group">
 <label>Tamanho</label>
-<input id="tamanho" type="text">
+
+    <select id="tamanho">
+
+        <option value="">Selecione</option>
+
+        <option value="PP">PP</option>
+
+        <option value="P">P</option>
+
+        <option value="M">M</option>
+
+        <option value="G">G</option>
+
+        <option value="GG">GG</option>
+
+        <option value="XG">XG</option>
+
+        <option value="EXG">EXG</option>
+
+    </select>
+
+
 </div>
 
 <div class="input-group">
@@ -200,6 +237,7 @@ Próximo →
 </section>
 
 </main>
+
 
 <!-- Biblioteca jsPDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>

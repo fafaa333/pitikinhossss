@@ -240,25 +240,43 @@ function etapaAnterior() {
 
 let produtos = [];
 
+const tabelaProdutos = {
+
+    "Roupa Pós Cirúrgica Sem Embalagem": {
+        categoria: "Roupa Pós Cirúrgica",
+        valor: 0
+    },
+
+    "Roupa Pós Cirúrgica Embalagem Simples": {
+        categoria: "Roupa Pós Cirúrgica",
+        valor: 0
+    },
+
+    "Roupa Pós Cirúrgica Embalagem com Botão": {
+        categoria: "Roupa Pós Cirúrgica",
+        valor: 0
+    }
+
+};
+function atualizarProduto() {
+//atualização futuramente
+}
+
 function adicionarProduto() {
 
-    const produto = document.getElementById("produto").value;
+const produto = document.getElementById("produto").value;
 
-    const categoria = document.getElementById("categoria").value;
+const tamanho = document.getElementById("tamanho").value;
 
-    const tamanho = document.getElementById("tamanho").value;
+const quantidade = Number(document.getElementById("quantidade").value);
 
-    const quantidade = Number(document.getElementById("quantidade").value);
+const valor = Number(document.getElementById("valor").value);
 
-    const valor = Number(document.getElementById("valor").value);
-
-    const subtotal = quantidade * valor;
+const subtotal = quantidade * valor;
 
     produtos.push({
 
         produto,
-
-        categoria,
 
         tamanho,
 
@@ -292,29 +310,21 @@ function atualizarTabela() {
 
         <tr>
 
-            <td>${item.produto}</td>
+    <td>${item.produto} - Tam. ${item.tamanho}</td>
 
-            <td>${item.categoria}</td>
+    <td>${item.quantidade}</td>
 
-            <td>${item.tamanho}</td>
+    <td>R$ ${item.valor.toFixed(2)}</td>
 
-            <td>${item.quantidade}</td>
+    <td>R$ ${item.subtotal.toFixed(2)}</td>
 
-            <td>R$ ${item.valor.toFixed(2)}</td>
+    <td>
+        <button onclick="removerProduto(${indice})">
+            🗑
+        </button>
+    </td>
 
-            <td>R$ ${item.subtotal.toFixed(2)}</td>
-
-            <td>
-
-                <button onclick="removerProduto(${indice})">
-
-                    🗑
-
-                </button>
-
-            </td>
-
-        </tr>
+</tr>
 
         `;
 
@@ -340,7 +350,16 @@ function removerProduto(indice) {
 
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
+    //cores pdf
+    const MARROM = [139, 100, 83];
+    const BEGE = [239, 194, 170];
+    const CINZA = [235, 235, 235];
+    const PRETO = [35, 35, 35];
+    const BRANCO = [255, 255, 255];
 
+    doc.setTextColor(...MARROM);
+    doc.setFillColor(...BEGE);
+    doc.setDrawColor(...MARROM);
     // Dados do cliente
     const cliente = document.getElementById("cliente").value;
     const cnpj = document.getElementById("cnpj").value;
@@ -412,10 +431,29 @@ function removerProduto(indice) {
     });
 
     doc.autoTable({
-        startY: y,
-        head: [["Produto","Qtd.","Valor","Subtotal"]],
-        body: linhas
-    });
+    startY: y,
+
+    head: [["Produto","Qtd.","Valor","Subtotal"]],
+
+    body: linhas,
+
+    theme: "grid",
+
+    headStyles: {
+        fillColor: MARROM,
+        textColor: BRANCO,
+        fontStyle: "bold",
+        halign: "center"
+    },
+
+    bodyStyles: {
+        textColor: PRETO
+    },
+
+    alternateRowStyles: {
+        fillColor: CINZA
+    }
+});
 
     // Total
     let finalY = doc.lastAutoTable.finalY + 10;
