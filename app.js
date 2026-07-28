@@ -183,31 +183,73 @@ function voltar() {
     history.back();
 
 }
+function gerarNumeroPedido() {
 
+    const hoje = new Date();
+
+    const ano = String(hoje.getFullYear()).slice(-2);
+    const mes = String(hoje.getMonth() + 1).padStart(2, "0");
+
+    const chave = `pedido_${ano}_${mes}`;
+
+    let sequencia = Number(localStorage.getItem(chave)) || 1;
+
+    const numero = `${ano}.${mes}.${String(sequencia).padStart(3, "0")}`;
+
+    document.getElementById("numeroPedido").textContent = numero;
+
+}
+function salvarNumeroPedido() {
+
+    const hoje = new Date();
+
+    const ano = String(hoje.getFullYear()).slice(-2);
+    const mes = String(hoje.getMonth() + 1).padStart(2, "0");
+
+    const chave = `pedido_${ano}_${mes}`;
+
+    let sequencia = Number(localStorage.getItem(chave)) || 1;
+
+    localStorage.setItem(chave, sequencia + 1);
+
+}
 /* ===========================================================
    AVANÇAR ETAPAS
 =========================================================== */
 
 let etapaAtual = 1;
 
+function atualizarProgresso() {
+
+    const barra = document.querySelector(".progress-fill");
+    const etapas = document.querySelectorAll(".step");
+
+    barra.style.width = (etapaAtual * 33.33) + "%";
+
+    etapas.forEach((etapa, indice) => {
+        etapa.classList.toggle("active", indice < etapaAtual);
+    });
+
+}
+
 function proximaEtapa() {
 
     const atual = document.getElementById("etapa" + etapaAtual);
 
     if (atual) {
-
         atual.style.display = "none";
-
     }
 
-    etapaAtual++;
+    if (etapaAtual < 3) {
+        etapaAtual++;
+    }
+
+    atualizarProgresso();
 
     const proxima = document.getElementById("etapa" + etapaAtual);
 
     if (proxima) {
-
         proxima.style.display = "block";
-
     }
 
 }
@@ -217,23 +259,22 @@ function etapaAnterior() {
     const atual = document.getElementById("etapa" + etapaAtual);
 
     if (atual) {
-
         atual.style.display = "none";
-
     }
 
-    etapaAtual--;
+    if (etapaAtual > 1) {
+        etapaAtual--;
+    }
+
+    atualizarProgresso();
 
     const anterior = document.getElementById("etapa" + etapaAtual);
 
     if (anterior) {
-
         anterior.style.display = "block";
-
     }
 
 }
-
 /* ===========================================================
    PRODUTOS
 =========================================================== */
@@ -350,7 +391,8 @@ function removerProduto(indice) {
 
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
-    //cores pdf
+
+    // Cores
     const MARROM = [139, 100, 83];
     const BEGE = [239, 194, 170];
     const CINZA = [235, 235, 235];
@@ -360,6 +402,10 @@ function removerProduto(indice) {
     doc.setTextColor(...MARROM);
     doc.setFillColor(...BEGE);
     doc.setDrawColor(...MARROM);
+
+    // Fonte padrão
+    doc.setFont("helvetica", "normal");
+
     // Dados do cliente
     const cliente = document.getElementById("cliente").value;
     const cnpj = document.getElementById("cnpj").value;
@@ -370,26 +416,42 @@ function removerProduto(indice) {
     const estado = document.getElementById("estado").value;
     const observacao = document.getElementById("observacao").value;
 
-    // Cabeçalho
-    doc.setFontSize(18);
+    /* ==========================
+       CABEÇALHO
+    ========================== */
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(24);
     doc.text("PITIKINHOS", 14, 20);
 
-    doc.setFontSize(11);
-    doc.text("Orçamento", 14, 28);
+    
+    doc.setFontSize(12);
+    
 
-    doc.text("Pedido Nº: " + document.getElementById("numeroPedido").innerText, 140, 20);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(16);
+    doc.text(
+        "Pedido Nº " + document.getElementById("numeroPedido").innerText,
+        130,
+        20
+    );
 
-    doc.line(14, 32, 196, 32);
+   doc.line(14, 28, 196, 28);
 
-    // Cliente
+    /* ==========================
+       CLIENTE
+    ========================== */
+
     let y = 42;
 
+    doc.setFont("helvetica", "bold");
     doc.setFontSize(13);
-    doc.text("Dados do Cliente", 14, y);
+    doc.text("DADOS DO CLIENTE", 14, y);
 
     y += 8;
 
-    doc.setFontSize(11);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10.5);
 
     doc.text("Nome: " + cliente, 14, y);
     y += 7;
@@ -410,14 +472,17 @@ function removerProduto(indice) {
 
     y += 12;
 
-    // Produtos
+    /* ==========================
+       TABELA
+    ========================== */
+
     const linhas = [];
 
     document.querySelectorAll("#listaProdutos tr").forEach(tr => {
 
         const colunas = tr.querySelectorAll("td");
 
-        if(colunas.length >= 4){
+        if (colunas.length >= 4) {
 
             linhas.push([
                 colunas[0].innerText,
@@ -431,34 +496,51 @@ function removerProduto(indice) {
     });
 
     doc.autoTable({
-    startY: y,
 
-    head: [["Produto","Qtd.","Valor","Subtotal"]],
+        startY: y,
 
-    body: linhas,
+        head: [["Produto", "Qtd.", "Valor", "Subtotal"]],
 
-    theme: "grid",
+        body: linhas,
 
-    headStyles: {
-        fillColor: MARROM,
-        textColor: BRANCO,
-        fontStyle: "bold",
-        halign: "center"
-    },
+        theme: "grid",
 
-    bodyStyles: {
-        textColor: PRETO
-    },
+        headStyles: {
 
-    alternateRowStyles: {
-        fillColor: CINZA
-    }
-});
+            fillColor: MARROM,
+            textColor: BRANCO,
+            font: "helvetica",
+            fontStyle: "bold",
+            fontSize: 10,
+            halign: "center"
 
-    // Total
+        },
+
+        bodyStyles: {
+
+            font: "helvetica",
+            fontStyle: "normal",
+            fontSize: 10,
+            textColor: PRETO
+
+        },
+
+        alternateRowStyles: {
+
+            fillColor: CINZA
+
+        }
+
+    });
+
+    /* ==========================
+       TOTAL
+    ========================== */
+
     let finalY = doc.lastAutoTable.finalY + 10;
 
-    doc.setFontSize(13);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(14);
 
     doc.text(
         "Total Geral: " + document.getElementById("totalPedido").innerText,
@@ -468,18 +550,30 @@ function removerProduto(indice) {
 
     finalY += 12;
 
-    // Observações
+    /* ==========================
+       OBSERVAÇÕES
+    ========================== */
+
+    doc.setFont("helvetica", "bold");
     doc.setFontSize(12);
-    doc.text("Observações:", 14, finalY);
+    doc.text("OBSERVAÇÕES", 14, finalY);
 
     finalY += 8;
 
+    doc.setFont("helvetica", "normal");
     doc.setFontSize(10);
 
     const texto = doc.splitTextToSize(observacao || "-", 180);
 
     doc.text(texto, 14, finalY);
 
-    // Salvar
+    /* ==========================
+       SALVAR
+    ========================== */
+
     doc.save("Orcamento_Pitikinhos.pdf");
+
+    salvarNumeroPedido();
+    gerarNumeroPedido();
+
 }
