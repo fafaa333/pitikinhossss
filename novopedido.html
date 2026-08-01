@@ -47,6 +47,7 @@
 <div class="steps">
     <button class="step active">👤 Cliente</button>
     <button class="step">📦 Produtos</button>
+    <button class="step">🚚 Entrega</button>
     <button class="step">📄 PDF</button>
 </div>
 
@@ -64,17 +65,22 @@
 
 <div class="input-group">
 <label>CNPJ</label>
-<input type="text" id="cnpj">
+<input type="text" id="cnpj" oninput="mascaraCNPJ(this)">
 </div>
 
 <div class="input-group">
 <label>Telefone</label>
-<input type="text" id="telefone">
+<input type="text" id="telefone" oninput="mascaraTelefone(this)">
 </div>
 
 <div class="input-group">
 <label>Instagram</label>
 <input type="text" id="instagram">
+</div>
+
+<div class="input-group">
+    <label>CEP</label>
+    <input type="text" id="cep" maxlength="9" oninput="mascaraCEP(this)" onblur="buscarCEP()">
 </div>
 
 <div class="input-group full">
@@ -130,8 +136,8 @@ Próximo →
 </div>
 
 <div class="input-group">
-<label>Animal</label>
-<select id="Animal">
+<label>Sexo</label>
+<select id="Sexo">
  <option value="">Selecione o Sexo</option>
 
     <option>Macho</option>
@@ -208,8 +214,108 @@ Próximo →
 </div>
 
 </section>
-
 <!-- ETAPA 3 -->
+<section id="etapa3" class="card" style="display:none;">
+
+<h2>Entrega</h2>
+
+<div class="form-grid">
+
+    <div class="input-group">
+        <label>Tipo de Envio</label>
+
+        <select id="tipoFrete">
+
+            <option value="">Selecione</option>
+
+            <option>Correios</option>
+
+            <option>Transportadora</option>
+
+            <option>Motoboy</option>
+
+            <option>Entrega Própria</option>
+
+            <option>Retirada na Loja</option>
+
+        </select>
+
+    </div>
+
+    <div class="input-group">
+        <label>Valor do Frete</label>
+
+        <input
+            type="number"
+            id="frete"
+            step="0.01"
+            value="0">
+
+    </div>
+
+    <div class="input-group">
+        <label>Forma de Pagamento</label>
+
+        <select id="pagamento">
+
+            <option>PIX</option>
+
+            <option>Cartão</option>
+
+            <option>Boleto</option>
+
+            <option>Dinheiro</option>
+
+        </select>
+
+    </div>
+
+    <div class="input-group">
+        <label>Parcelamento</label>
+
+        <select id="parcelas">
+
+            <option>À Vista</option>
+
+            <option>2x</option>
+            <option>3x</option>
+            <option>4x</option>
+            <option>5x</option>
+            <option>6x</option>
+            <option>7x</option>
+            <option>8x</option>
+            <option>9x</option>
+            <option>10x</option>
+            <option>11x</option>
+            <option>12x</option>
+
+        </select>
+
+    </div>
+
+    <div class="input-group">
+        <label>Data Prevista para Postagem</label>
+
+        <input type="date" id="dataPostagem">
+
+    </div>
+
+</div>
+
+<div class="buttons">
+
+    <button onclick="etapaAnterior()">
+        ← Voltar
+    </button>
+
+    <button class="btn-next" onclick="proximaEtapa()">
+        Próximo →
+    </button>
+
+</div>
+
+</section>
+<!-- ETAPA 4 -->
 <section id="etapa3" class="card" style="display:none;">
 
 <h2>Resumo do Pedido</h2>

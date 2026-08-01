@@ -6,13 +6,13 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     iniciarLogin();
-
     atualizarData();
-
     gerarNumeroPedido();
 
-});
+    etapaAtual = 1;
+    atualizarProgresso();
 
+});
 /* ===========================================================
    LOGIN
 =========================================================== */
@@ -224,14 +224,26 @@ function atualizarProgresso() {
     const barra = document.querySelector(".progress-fill");
     const etapas = document.querySelectorAll(".step");
 
-    barra.style.width = (etapaAtual * 33.33) + "%";
+    const largura = {
+    1: "25%",
+    2: "50%",
+    3: "75%",
+    4: "100%"
+};
+
+    barra.style.width = largura[etapaAtual];
 
     etapas.forEach((etapa, indice) => {
-        etapa.classList.toggle("active", indice < etapaAtual);
+
+        if (indice === etapaAtual - 1) {
+            etapa.classList.add("active");
+        } else {
+            etapa.classList.remove("active");
+        }
+
     });
 
 }
-
 function proximaEtapa() {
 
     const atual = document.getElementById("etapa" + etapaAtual);
@@ -240,7 +252,7 @@ function proximaEtapa() {
         atual.style.display = "none";
     }
 
-    if (etapaAtual < 3) {
+    if (etapaAtual < 4) {
         etapaAtual++;
     }
 
@@ -250,28 +262,6 @@ function proximaEtapa() {
 
     if (proxima) {
         proxima.style.display = "block";
-    }
-
-}
-
-function etapaAnterior() {
-
-    const atual = document.getElementById("etapa" + etapaAtual);
-
-    if (atual) {
-        atual.style.display = "none";
-    }
-
-    if (etapaAtual > 1) {
-        etapaAtual--;
-    }
-
-    atualizarProgresso();
-
-    const anterior = document.getElementById("etapa" + etapaAtual);
-
-    if (anterior) {
-        anterior.style.display = "block";
     }
 
 }
@@ -307,6 +297,8 @@ function adicionarProduto() {
 
 const produto = document.getElementById("produto").value;
 
+const sexo = document.getElementById("Sexo").value;
+
 const tamanho = document.getElementById("tamanho").value;
 
 const quantidade = Number(document.getElementById("quantidade").value);
@@ -318,6 +310,8 @@ const subtotal = quantidade * valor;
     produtos.push({
 
         produto,
+    
+        sexo,
 
         tamanho,
 
@@ -351,7 +345,7 @@ function atualizarTabela() {
 
         <tr>
 
-    <td>${item.produto} - Tam. ${item.tamanho}</td>
+   <td>${item.produto} - Tam. ${item.tamanho} - ${item.sexo}</td>
 
     <td>${item.quantidade}</td>
 
@@ -567,13 +561,76 @@ function removerProduto(indice) {
 
     doc.text(texto, 14, finalY);
 
-    /* ==========================
-       SALVAR
-    ========================== */
+doc.text(texto, 14, finalY);
 
-    doc.save("Orcamento_Pitikinhos.pdf");
+/* ==========================
+   SALVAR
+========================== */
 
-    salvarNumeroPedido();
-    gerarNumeroPedido();
+doc.save("Orcamento_Pitikinhos.pdf");
+
+// Atualiza a sequência do pedido
+salvarNumeroPedido();
+gerarNumeroPedido();
+
+// Reinicia as etapas
+etapaAtual = 1;
+atualizarProgresso();
+
+document.getElementById("etapa1").style.display = "block";
+document.getElementById("etapa2").style.display = "none";
+document.getElementById("etapa3").style.display = "none";
+}
+function mascaraTelefone(campo) {
+
+    campo.value = campo.value
+        .replace(/\D/g, "")
+        .replace(/^(\d{2})(\d)/, "($1) $2")
+        .replace(/(\d{5})(\d)/, "$1-$2")
+        .replace(/(-\d{4})\d+?$/, "$1");
+
+}
+
+function mascaraCNPJ(campo) {
+
+    campo.value = campo.value
+        .replace(/\D/g, "")
+        .replace(/^(\d{2})(\d)/, "$1.$2")
+        .replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3")
+        .replace(/\.(\d{3})(\d)/, ".$1/$2")
+        .replace(/(\d{4})(\d)/, "$1-$2");
+
+}
+function mascaraCEP(campo) {
+
+    campo.value = campo.value
+        .replace(/\D/g, "")
+        .replace(/^(\d{5})(\d)/, "$1-$2")
+        .replace(/(-\d{3})\d+?$/, "$1");
+
+}
+async function buscarCEP() {
+
+    const cep = document.getElementById("cep").value.replace(/\D/g, "");
+
+    if (cep.length !== 8) return;
+
+    try {
+
+        const resposta = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+
+        const dados = await resposta.json();
+
+        if (dados.erro) return;
+
+        document.getElementById("endereco").value = dados.logradouro;
+        document.getElementById("cidade").value = dados.localidade;
+        document.getElementById("estado").value = dados.uf;
+
+    } catch (erro) {
+
+        console.log("Erro ao buscar CEP.");
+
+    }
 
 }
