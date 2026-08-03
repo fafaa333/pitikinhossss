@@ -284,29 +284,30 @@ Próximo →
 </div>
     </div>
 
+<div class="input-group">
+    <label>Parcelamento</label>
+
+    <select id="parcelas" onchange="atualizarParcelamento()">
+        <option value="0">Sem parcelamento</option>
+        <option value="1">1 parcela</option>
+        <option value="2">2 parcelas</option>
+        <option value="3">3 parcelas</option>
+        <option value="4">4 parcelas</option>
+        <option value="5">5 parcelas</option>
+        <option value="6">6 parcelas</option>
+    </select>
+</div>
+<div id="listaParcelas"></div>
+
     <div class="input-group">
-        <label>Parcelamento</label>
+    <label>Data do Pedido</label>
 
-        <select id="parcelas">
-
-            <option>À Vista</option>
-
-            <option>2x</option>
-            <option>3x</option>
-            <option>4x</option>
-            <option>5x</option>
-            <option>6x</option>
-            <option>7x</option>
-            <option>8x</option>
-            <option>9x</option>
-            <option>10x</option>
-            <option>11x</option>
-            <option>12x</option>
-
-        </select>
-
-    </div>
-
+    <input
+        type="date"
+        id="dataPedido"
+        readonly
+    >
+</div>
     <div class="input-group">
         <label>Data Prevista para Postagem</label>
 
@@ -334,13 +335,42 @@ Próximo →
 
 <h2>Resumo do Pedido</h2>
 
-<p>Aqui serão exibidos os dados preenchidos antes da geração do PDF.</p>
-
 <div id="resumoPedido">
+<div id="resumoParcelas"></div> 
+    <p>
+        <strong>Cliente:</strong>
+        <span id="resumoCliente">-</span>
+    </p>
 
-<p><strong>Cliente:</strong> <span id="resumoCliente">-</span></p>
+    <p>
+        <strong>Entrega:</strong>
+        <span id="resumoEntrega">-</span>
+    </p>
 
-<p><strong>Total:</strong> <span id="resumoTotal">R$ 0,00</span></p>
+    <p>
+        <strong>Forma de Pagamento:</strong>
+        <span id="resumoPagamento">-</span>
+    </p>
+
+    <p>
+        <strong>Subtotal dos Produtos:</strong>
+        <span id="resumoSubtotal">R$ 0,00</span>
+    </p>
+
+    <p>
+        <strong>Frete:</strong>
+        <span id="resumoFrete">R$ 0,00</span>
+    </p>
+
+    <p>
+        <strong>Acréscimo:</strong>
+        <span id="resumoAcrescimo">R$ 0,00</span>
+    </p>
+
+    <p>
+        <strong>Total Geral:</strong>
+        <span id="resumoTotal">R$ 0,00</span>
+    </p>
 
 </div>
 
