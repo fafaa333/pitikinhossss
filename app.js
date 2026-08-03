@@ -381,7 +381,51 @@ function removerProduto(indice) {
 
     atualizarTabela();
 
-}function gerarPDF() {
+}
+function atualizarPagamento() {
+
+    const pagamento = document.getElementById("pagamento").value;
+    const campoAcrescimo = document.getElementById("acrescimoPagamento");
+    const campoTotalGeral = document.getElementById("totalGeral");
+
+    // Soma dos produtos
+    let totalProdutos = 0;
+
+    produtos.forEach(item => {
+        totalProdutos += item.subtotal;
+    });
+
+    // Valor do frete
+    const frete = Number(document.getElementById("frete").value) || 0;
+
+    // Produtos + frete
+    const baseCalculo = totalProdutos + frete;
+
+    // Acréscimo
+    let acrescimo = 0;
+
+    if (pagamento === "link") {
+        acrescimo = baseCalculo * 0.06;
+    }
+
+    // Total final
+    const totalGeral = baseCalculo + acrescimo;
+
+    // Mostra o acréscimo
+    campoAcrescimo.value = acrescimo.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+    });
+
+    // Mostra o total geral
+    campoTotalGeral.value = totalGeral.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+    });
+
+}
+
+function gerarPDF() {
 
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();

@@ -230,13 +230,9 @@ Próximo →
 
             <option>Correios</option>
 
-            <option>Transportadora</option>
+            <option>Loggi</option>
 
-            <option>Motoboy</option>
-
-            <option>Entrega Própria</option>
-
-            <option>Retirada na Loja</option>
+            <option>JadLog</option>
 
         </select>
 
@@ -246,28 +242,46 @@ Próximo →
         <label>Valor do Frete</label>
 
         <input
-            type="number"
-            id="frete"
-            step="0.01"
-            value="0">
+    type="number"
+    id="frete"
+    step="0.01"
+    value="0"
+    oninput="atualizarPagamento()"
+>
 
     </div>
 
     <div class="input-group">
         <label>Forma de Pagamento</label>
 
-        <select id="pagamento">
+        <select id="pagamento" onchange="atualizarPagamento()">
 
-            <option>PIX</option>
+    <option value="">Selecione o pagamento</option>
 
-            <option>Cartão</option>
+    <option value="pix">PIX</option>
 
-            <option>Boleto</option>
+    <option value="link">Link de Pagamento</option>
 
-            <option>Dinheiro</option>
+</select>
+    <div class="input-group">
+    <label>Acréscimo do Pagamento</label>
+    <input
+        type="text"
+        id="acrescimoPagamento"
+        value="R$ 0,00"
+        readonly
+    >
+    <div class="input-group">
+    <label>Total Geral</label>
 
-        </select>
-
+    <input
+        type="text"
+        id="totalGeral"
+        value="R$ 0,00"
+        readonly
+    >
+</div>
+</div>
     </div>
 
     <div class="input-group">
@@ -316,7 +330,7 @@ Próximo →
 
 </section>
 <!-- ETAPA 4 -->
-<section id="etapa3" class="card" style="display:none;">
+<section id="etapa4" class="card" style="display:none;">
 
 <h2>Resumo do Pedido</h2>
 
