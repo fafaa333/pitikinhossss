@@ -64,8 +64,30 @@
 </div>
 
 <div class="input-group">
-<label>CNPJ</label>
-<input type="text" id="cnpj" oninput="mascaraCNPJ(this)">
+
+    <label>Tipo de Documento</label>
+
+    <select id="tipoDocumento" onchange="alterarTipoDocumento()">
+        <option value="cpf">CPF</option>
+        <option value="cnpj">CNPJ</option>
+    </select>
+
+</div>
+
+
+<div class="input-group">
+
+    <label id="labelDocumento">CPF</label>
+
+    <input
+        type="text"
+        id="cnpj"
+        maxlength="14"
+        inputmode="numeric"
+        placeholder="000.000.000-00"
+        oninput="mascaraDocumento(this)"
+    >
+
 </div>
 
 <div class="input-group">
@@ -182,6 +204,40 @@ Próximo →
 <input id="valor" type="number" step="0.01">
 </div>
 
+<!-- BRINDE -->
+<div class="input-group">
+
+    <label class="checkbox-brinde">
+
+        <input
+            type="checkbox"
+            id="produtoBrinde">
+
+        Este produto é um brinde
+
+    </label>
+
+</div>
+
+<!-- VALOR DO BRINDE -->
+<div
+    class="input-group"
+    id="campoValorBrinde"
+    style="display: none;"
+>
+
+    <label>Valor do Brinde</label>
+
+    <input
+        type="number"
+        id="valorBrinde"
+        step="0.01"
+        min="0"
+        placeholder="Digite o valor do brinde"
+    >
+
+</div>
+
 <div class="input-group full">
 <label>Observação</label>
 <textarea id="obsProduto"></textarea>
@@ -281,8 +337,16 @@ Próximo →
         readonly
     >
 </div>
+<div class="input-group">
+
+    <label>Nota Fiscal</label>
+
+    <select id="notaFiscal">
+        <option value="nao">Não</option>
+        <option value="sim">Sim</option>
+    </select>
+
 </div>
-    </div>
 
 <div class="input-group">
     <label>Parcelamento</label>
@@ -363,8 +427,13 @@ Próximo →
     </p>
 
     <p>
-        <strong>Acréscimo:</strong>
-        <span id="resumoAcrescimo">R$ 0,00</span>
+    <strong>Taxa Link (6%):</strong>
+    <span id="resumoTaxaLink">R$ 0,00</span>
+    </p>
+
+    <p>
+    <strong>Taxa NF (4%):</strong>
+    <span id="resumoTaxaNF">R$ 0,00</span>
     </p>
 
     <p>
