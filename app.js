@@ -4362,3 +4362,19 @@ window.etapaAnterior = function () {
     }
 
 };
+document.addEventListener("DOMContentLoaded", function () {
+
+    const tipoDocumento =
+        document.getElementById("tipoDocumento");
+
+    if (tipoDocumento) {
+
+        tipoDocumento.addEventListener(
+            "change",
+            alterarTipoDocumento
+        );
+
+        alterarTipoDocumento();
+    }
+
+});
