@@ -1913,10 +1913,12 @@ function atualizarParcelamento() {
    GERAR PDF
 =========================================================== */
 
-function gerarPDF() {
+async function gerarPDF() {
 
     /*
-       Verifica se o jsPDF foi carregado.
+    ===========================================================
+       VERIFICAÇÃO DO JSPDF
+    ===========================================================
     */
 
     if (
@@ -1930,7 +1932,6 @@ function gerarPDF() {
         );
 
         return;
-
     }
 
 
@@ -1940,52 +1941,50 @@ function gerarPDF() {
 
 
     /*
-       Cria o documento.
+    ===========================================================
+       CRIA DOCUMENTO
+    ===========================================================
     */
 
     const doc =
         new jsPDF();
 
 
-
-    /* =======================================================
+    /*
+    ===========================================================
        CORES
-    ======================================================= */
+    ===========================================================
+    */
 
     const MARROM =
         [139, 100, 83];
 
-
     const BEGE =
         [239, 194, 170];
-
 
     const CINZA =
         [235, 235, 235];
 
-
     const PRETO =
         [35, 35, 35];
-
 
     const BRANCO =
         [255, 255, 255];
 
 
+    /*
+    ===========================================================
+       CONFIGURAÇÃO INICIAL
+    ===========================================================
+    */
+
     doc.setTextColor(
-        ...MARROM
+        ...PRETO
     );
-
-
-    doc.setFillColor(
-        ...BEGE
-    );
-
 
     doc.setDrawColor(
         ...MARROM
     );
-
 
     doc.setFont(
         "helvetica",
@@ -1993,35 +1992,34 @@ function gerarPDF() {
     );
 
 
-    /* =======================================================
+    /*
+    ===========================================================
        FUNÇÃO AUXILIAR — VALOR DO CAMPO
-    ======================================================= */
+    ===========================================================
+    */
 
     function obterValorCampo(id) {
 
         const campo =
             document.getElementById(id);
 
-
         if (!campo) {
-
             return "";
-
         }
-
 
         return (
             campo.value ??
             campo.innerText ??
             ""
         );
-
     }
 
 
-    /* =======================================================
+    /*
+    ===========================================================
        FUNÇÃO AUXILIAR — MOEDA
-    ======================================================= */
+    ===========================================================
+    */
 
     function formatarMoedaPDF(valor) {
 
@@ -2034,35 +2032,29 @@ function gerarPDF() {
                 currency: "BRL"
             }
         );
-
     }
 
 
-    /* =======================================================
+    /*
+    ===========================================================
        FUNÇÃO AUXILIAR — DATA
-    ======================================================= */
+    ===========================================================
+    */
 
     function formatarDataPDF(data) {
 
         if (!data) {
-
             return "-";
-
         }
-
 
         const partes =
             data.split("-");
 
-
         if (
             partes.length !== 3
         ) {
-
             return data;
-
         }
-
 
         return (
             partes[2] +
@@ -2071,55 +2063,113 @@ function gerarPDF() {
             "/" +
             partes[0]
         );
-
     }
 
 
-    /* =======================================================
+    /*
+    ===========================================================
+       FUNÇÃO AUXILIAR — LOGO
+       Tenta utilizar a logo real existente no HTML.
+    ===========================================================
+    */
+
+    async function obterLogoDataURL() {
+
+    try {
+
+        const logo = new Image();
+
+        logo.src = "img/logopdf.png";
+
+        await new Promise((resolve, reject) => {
+
+            logo.onload = resolve;
+            logo.onerror = reject;
+
+        });
+
+        if (!logo.naturalWidth) {
+            return null;
+        }
+
+        const canvas =
+            document.createElement(
+                "canvas"
+            );
+
+        canvas.width =
+            logo.naturalWidth;
+
+        canvas.height =
+            logo.naturalHeight;
+
+        const ctx =
+            canvas.getContext(
+                "2d"
+            );
+
+        ctx.drawImage(
+            logo,
+            0,
+            0
+        );
+
+        return canvas.toDataURL(
+            "image/png"
+        );
+
+    } catch (erro) {
+
+        console.warn(
+            "Não foi possível carregar o logo no PDF:",
+            erro
+        );
+
+        return null;
+    }
+}
+
+
+    /*
+    ===========================================================
        DADOS DO CLIENTE
-    ======================================================= */
+    ===========================================================
+    */
 
     const cliente =
         obterValorCampo(
             "cliente"
         );
 
-
     const cnpj =
         obterValorCampo(
             "cnpj"
         );
-
 
     const telefone =
         obterValorCampo(
             "telefone"
         );
 
-
     const instagram =
         obterValorCampo(
             "instagram"
         );
-
 
     const cep =
         obterValorCampo(
             "cep"
         );
 
-
     const endereco =
         obterValorCampo(
             "endereco"
         );
 
-
     const cidade =
         obterValorCampo(
             "cidade"
         );
-
 
     const estado =
         obterValorCampo(
@@ -2127,27 +2177,33 @@ function gerarPDF() {
         );
 
 
+    /*
+       Observação continua sendo lida
+       para não alterar a estrutura do sistema,
+       porém NÃO será impressa no PDF.
+    */
+
     const observacao =
         obterValorCampo(
             "observacao"
         );
 
 
-    /* =======================================================
+    /*
+    ===========================================================
        ENTREGA
-    ======================================================= */
+    ===========================================================
+    */
 
     const tipoFrete =
         obterValorCampo(
             "tipoFrete"
         );
 
-
     const campoFrete =
         document.getElementById(
             "frete"
         );
-
 
     const frete =
         campoFrete
@@ -2158,31 +2214,30 @@ function gerarPDF() {
                     ",",
                     "."
                 )
-              ) || 0
+            ) || 0
             : 0;
 
 
-    /* =======================================================
+    /*
+    ===========================================================
        PAGAMENTO
-    ======================================================= */
+    ===========================================================
+    */
 
     const pagamento =
         obterValorCampo(
             "pagamento"
         );
 
-
     const notaFiscal =
         obterValorCampo(
             "notaFiscal"
         );
 
-
     const dataPedido =
         obterValorCampo(
             "dataPedido"
         );
-
 
     const dataPostagem =
         obterValorCampo(
@@ -2190,13 +2245,14 @@ function gerarPDF() {
         );
 
 
-    /* =======================================================
+    /*
+    ===========================================================
        CÁLCULO DOS PRODUTOS
-    ======================================================= */
+    ===========================================================
+    */
 
     let subtotalProdutos =
         0;
-
 
     produtos.forEach(
         item => {
@@ -2214,29 +2270,31 @@ function gerarPDF() {
                     Number(
                         item.subtotal
                     ) || 0;
-
             }
 
         }
     );
 
 
-    /* =======================================================
+    /*
+    ===========================================================
        BASE DE CÁLCULO
-    ======================================================= */
+    ===========================================================
+    */
 
     const baseCalculo =
         subtotalProdutos +
         frete;
 
 
-    /* =======================================================
+    /*
+    ===========================================================
        TAXA LINK — 6%
-    ======================================================= */
+    ===========================================================
+    */
 
     let acrescimoLink =
         0;
-
 
     if (
         pagamento === "link"
@@ -2244,17 +2302,17 @@ function gerarPDF() {
 
         acrescimoLink =
             baseCalculo * 0.06;
-
     }
 
 
-    /* =======================================================
+    /*
+    ===========================================================
        TAXA NF — 4%
-    ======================================================= */
+    ===========================================================
+    */
 
     let acrescimoNF =
         0;
-
 
     if (
         notaFiscal === "sim"
@@ -2262,37 +2320,41 @@ function gerarPDF() {
 
         acrescimoNF =
             baseCalculo * 0.04;
-
     }
 
 
-    /* =======================================================
+    /*
+    ===========================================================
        TOTAL DAS TAXAS
-    ======================================================= */
+    ===========================================================
+    */
 
     const acrescimo =
         acrescimoLink +
         acrescimoNF;
 
 
-    /* =======================================================
+    /*
+    ===========================================================
        TOTAL FINAL
-    ======================================================= */
+    ===========================================================
+    */
 
     const totalGeral =
         baseCalculo +
         acrescimo;
 
 
-    /* =======================================================
+    /*
+    ===========================================================
        DATAS FORMATADAS
-    ======================================================= */
+    ===========================================================
+    */
 
     const dataPedidoFormatada =
         formatarDataPDF(
             dataPedido
         );
-
 
     const dataPostagemFormatada =
         formatarDataPDF(
@@ -2300,13 +2362,14 @@ function gerarPDF() {
         );
 
 
-    /* =======================================================
+    /*
+    ===========================================================
        PAGAMENTO FORMATADO
-    ======================================================= */
+    ===========================================================
+    */
 
     let pagamentoFormatado =
         "-";
-
 
     if (
         pagamento === "pix"
@@ -2317,7 +2380,6 @@ function gerarPDF() {
 
     }
 
-
     else if (
         pagamento === "link"
     ) {
@@ -2326,7 +2388,6 @@ function gerarPDF() {
             "Link de Pagamento";
 
     }
-
 
     else if (
         pagamento
@@ -2338,299 +2399,344 @@ function gerarPDF() {
     }
 
 
- // ==========================
-// CABEÇALHO DO PEDIDO
-// ==========================
+    /*
+    ===========================================================
+       NÚMERO DO PEDIDO
+    ===========================================================
+    */
 
-const numeroPedido =
-    obterValorCampo(
-        "numeroPedido"
+    const numeroPedido =
+        obterValorCampo(
+            "numeroPedido"
+        );
+
+
+    /*
+    ===========================================================
+       LOGO PITIKINHOS CANTO SUPERIOR!
+    ===========================================================
+    */
+const logo =
+    document.querySelector(
+        "img.logo"
     );
 
 
-// Posição e tamanho do cabeçalho
-const topoX = 14;
+if (
+    logo &&
+    logo.complete &&
+    logo.naturalWidth > 0
+) {
 
-const topoY = 30;
-const topoLargura = 182;
-const topoAltura = 78;
+const logoDataURL = await obterLogoDataURL();
+if (logoDataURL) {
+    doc.addImage(
+        logoDataURL,
+        "PNG",
+        3,
+        4,
+        50,
+        30
+    );
+}
 
-const divisaoX = 105;
+}
+
+    /*
+    ===========================================================
+       CABEÇALHO
+    ===========================================================
+    */
+
+    const margem =
+        14;
+
+    const larguraPagina =
+        210;
+
+    const larguraConteudo =
+        larguraPagina -
+        (margem * 2);
 
 
-// ==========================
-// FUNDO DA COLUNA DO CLIENTE
-// ==========================
+/*
+===========================================================
+   CABEÇALHO PRINCIPAL — PITIKINHOS
+===========================================================
+*/
 
-doc.setFillColor(...BEGE);
+
+/*
+===========================================================
+   LOGO NO CANTO ESQUERDO
+===========================================================
+*/
 
 
-doc.rect(
-    topoX,
-    topoY,
-    divisaoX - topoX,
-    topoAltura,
-    "F"
+if (
+    logo &&
+    logo.complete &&
+    logo.naturalWidth > 0
+) {
+
+    try {
+
+        const canvas =
+            document.createElement(
+                "canvas"
+            );
+
+        canvas.width =
+            logo.naturalWidth;
+
+        canvas.height =
+            logo.naturalHeight;
+
+
+        const contexto =
+            canvas.getContext(
+                "2d"
+            );
+
+
+        contexto.drawImage(
+            logo,
+            0,
+            0
+        );
+
+        doc.addImage(
+            logoData,
+            "PNG",
+            14,
+            10,
+            32,
+            32,
+            undefined,
+            "FAST"
+        );
+
+    }
+
+    catch (erro) {
+
+        console.warn(
+            "Erro ao adicionar a logo ao PDF:",
+            erro
+        );
+
+    }
+
+}
+
+/*
+===========================================================
+   LOGO PITIKINHOS — CANTO SUPERIOR ESQUERDO
+===========================================================
+*/
+
+if (
+    logo &&
+    logo.complete &&
+    logo.naturalWidth > 0
 );
+/*
+===========================================================
+   PITIKINHOS PET — CENTRALIZADO E MAIOR
+===========================================================
+*/
 
-
-// ==========================
-// BORDA EXTERNA
-// ==========================
-
-doc.setDrawColor(...MARROM);
-
-doc.rect(
-    topoX,
-    topoY,
-    topoLargura,
-    topoAltura
+doc.setTextColor(
+    ...MARROM
 );
-
-
-// ==========================
-// DIVISÃO DAS COLUNAS
-// ==========================
-
-doc.line(
-    divisaoX,
-    topoY,
-    divisaoX,
-    topoY + topoAltura
-);
-
-
-// ==========================
-// COLUNA ESQUERDA
-// DADOS DO CLIENTE
-// ==========================
-
-doc.setTextColor(...MARROM);
 
 doc.setFont(
     "helvetica",
     "bold"
 );
 
-doc.setFontSize(13);
+doc.setFontSize(
+    28
+);
+
+doc.text(
+    "PITIKINHOS PET",
+    larguraPagina / 2,
+    24,
+    {
+        align: "center"
+    }
+);
+/*
+===========================================================
+   NÚMERO DO PEDIDO
+===========================================================
+*/
+
+doc.setTextColor(
+    ...MARROM
+);
+
+doc.setFont(
+    "helvetica",
+    "bold"
+);
+
+doc.setFontSize(
+    17
+);
+
+doc.text(
+    "PEDIDO Nº " + (numeroPedido || "-"),
+    165,
+    85,
+    {
+        align: "center"
+    }
+);
+
+/*
+===========================================================
+   DADOS DO CLIENTE
+===========================================================
+*/
+
+doc.setTextColor(
+    ...MARROM
+);
+
+doc.setFont(
+    "helvetica",
+    "bold"
+);
+
+doc.setFontSize(
+    14
+);
 
 doc.text(
     "DADOS DO CLIENTE",
-    19,
-    42
+    20,
+    58
 );
 
+
+/*
+===========================================================
+   INFORMAÇÕES DO CLIENTE
+===========================================================
+*/
+
+doc.setTextColor(
+    ...PRETO
+);
 
 doc.setFont(
     "helvetica",
     "normal"
 );
 
-doc.setFontSize(10.5);
+doc.setFontSize(
+    12
+);
 
 
-let clienteY = 51;
+let clienteY =
+    68;
 
 
 doc.text(
     "Nome: " +
     (cliente || "-"),
-    19,
+    20,
     clienteY
 );
 
-clienteY += 7;
+
+clienteY +=
+    6;
+
+
+const labelDocumento =
+    document.getElementById(
+        "labelDocumento"
+    );
+
+
+const nomeDocumento =
+    labelDocumento
+        ? labelDocumento.innerText
+        : "CNPJ";
 
 
 doc.text(
-    document.getElementById(
-        "labelDocumento"
-    ).innerText +
+    nomeDocumento +
     ": " +
     (cnpj || "-"),
-    19,
+    20,
     clienteY
 );
 
-clienteY += 7;
+
+clienteY +=
+    6;
 
 
 doc.text(
     "Telefone: " +
     (telefone || "-"),
-    19,
+    20,
     clienteY
 );
 
-clienteY += 7;
 
-
-doc.text(
-    "Instagram: " +
-    (instagram || "-"),
-    19,
-    clienteY
-);
-
-clienteY += 7;
+clienteY +=
+    6;
 
 
 doc.text(
     "CEP: " +
     (cep || "-"),
-    19,
-    clienteY
+    105,
+    clienteY - 12
 );
 
-clienteY += 7;
 
+/*
+===========================================================
+   ENDEREÇO
+===========================================================
+*/
 
 const enderecoPDF =
     doc.splitTextToSize(
         "Endereço: " +
         (endereco || "-"),
-        80
+        85
     );
+
 
 doc.text(
     enderecoPDF,
-    19,
-    clienteY
-);
-
-clienteY +=
-    enderecoPDF.length * 5;
-
-
-doc.text(
-    "Cidade: " +
-    (cidade || "-") +
-    " - " +
-    (estado || "-"),
-    19,
-    clienteY
+    105,
+    clienteY - 18
 );
 
 
-// ==========================
-// COLUNA DIREITA
-// PITIKINHOS
-// ==========================
-
-const centroDireita = 150;
-
-
-doc.setFont(
-    "helvetica",
-    "bold"
-);
-
-doc.setFontSize(18);
-
-doc.text(
-    "PITIKINHOS",
-    centroDireita,
-    44,
-    {
-        align: "center"
-    }
-);
+/*
+===========================================================
+   FIM DO CABEÇALHO
+===========================================================
+*/
+let y =
+    90;
 
 
-doc.setFontSize(12);
-
-doc.text(
-    "PET",
-    centroDireita,
-    51,
-    {
-        align: "center"
-    }
-);
-
-
-// Instagram
-
-doc.setFont(
-    "helvetica",
-    "normal"
-);
-
-doc.setFontSize(11);
-
-doc.text(
-    "@PITIKINHOS_PET",
-    centroDireita,
-    62,
-    {
-        align: "center"
-    }
-);
-
-
-// Linha separadora
-
-doc.line(
-    120,
-    68,
-    190,
-    68
-);
-
-
-// Endereço da Pitikinhos
-
-doc.setFontSize(10);
-
-doc.text(
-    "Rua Santo Antero, 258",
-    centroDireita,
-    77,
-    {
-        align: "center"
-    }
-);
-
-doc.text(
-    "Penha de França",
-    centroDireita,
-    84,
-    {
-        align: "center"
-    }
-);
-
-
-// Número do pedido
-
-doc.setFont(
-    "helvetica",
-    "bold"
-);
-
-doc.setFontSize(8.5);
-
-doc.text(
-    "PEDIDO Nº " +
-    (numeroPedido || "-"),
-    centroDireita,
-    91,
-    {
-        align: "center"
-    }
-);
-
-
-// ==========================
-// INÍCIO DOS PRODUTOS
-// ==========================
-
-y = 124;
-
-
-    /* =======================================================
+    /*
+    ===========================================================
        PRODUTOS
-    ======================================================= */
+    ===========================================================
+    */
 
     const linhasProdutos =
         [];
@@ -2650,7 +2756,6 @@ y = 124;
                 nomeProduto +=
                     " - Tam. " +
                     item.tamanho;
-
             }
 
 
@@ -2661,7 +2766,6 @@ y = 124;
                 nomeProduto +=
                     " - " +
                     item.sexo;
-
             }
 
 
@@ -2688,20 +2792,23 @@ y = 124;
 
 
     /*
-       IMPORTANTE:
-
-       A tabela de produtos precisa ser
-       criada ANTES de utilizar
-       doc.lastAutoTable.finalY.
+    ===========================================================
+       TABELA DE PRODUTOS
+    ===========================================================
     */
 
     doc.autoTable({
 
-        startY: y,
+        startY:
+            y,
+
+        margin: {
+            left: margem,
+            right: margem
+        },
 
         theme:
             "grid",
-
 
         head: [[
 
@@ -2714,7 +2821,6 @@ y = 124;
             "SUBTOTAL"
 
         ]],
-
 
         body:
             linhasProdutos,
@@ -2738,8 +2844,10 @@ y = 124;
                 9,
 
             halign:
-                "center"
+                "center",
 
+            valign:
+                "middle"
         },
 
 
@@ -2752,8 +2860,10 @@ y = 124;
                 9,
 
             textColor:
-                PRETO
+                PRETO,
 
+            valign:
+                "middle"
         },
 
 
@@ -2765,27 +2875,29 @@ y = 124;
         },
 
 
- columnStyles: {
+        columnStyles: {
 
-    0: {
-        cellWidth: 90
-    },
+            0: {
+                cellWidth: 90
+            },
 
-    1: {
-        cellWidth: 18,
-        halign: "center"
-    },
+            1: {
+                cellWidth: 18,
+                halign: "center"
+            },
 
-    2: {
-        cellWidth: 35,
-        halign: "right"
-    },
+            2: {
+                cellWidth: 35,
+                halign: "right"
+            },
 
-    3: {
-        cellWidth: 39,
-        halign: "right"
-       }
-},
+            3: {
+                cellWidth: 39,
+                halign: "right"
+            }
+
+        },
+
 
         didParseCell:
             function(data) {
@@ -2817,86 +2929,96 @@ y = 124;
 
 
     /*
-       Agora sim podemos utilizar
-       lastAutoTable.
+    ===========================================================
+       POSIÇÃO APÓS PRODUTOS
+    ===========================================================
     */
 
     let finalY =
         doc.lastAutoTable.finalY +
-        10;
+        7;
 
 
-    /* =======================================================
-       VALORES
-    ======================================================= */
+    /*
+    ===========================================================
+       RESUMO FINANCEIRO
+       Compacto, branco e sem TOTAL duplicado.
+    ===========================================================
+    */
+
+    const linhasFinanceiro = [
+
+        [
+            "Subtotal dos produtos",
+            formatarMoedaPDF(
+                subtotalProdutos
+            )
+        ],
+
+        [
+            "Frete",
+            formatarMoedaPDF(
+                frete
+            )
+        ]
+
+    ];
+
+
+    if (
+        acrescimoLink > 0
+    ) {
+
+        linhasFinanceiro.push([
+            "Taxa de Link de Pagamento (6%)",
+            formatarMoedaPDF(
+                acrescimoLink
+            )
+        ]);
+
+    }
+
+
+    if (
+        acrescimoNF > 0
+    ) {
+
+        linhasFinanceiro.push([
+            "Taxa Nota Fiscal (4%)",
+            formatarMoedaPDF(
+                acrescimoNF
+            )
+        ]);
+
+    }
+
+
+    linhasFinanceiro.push([
+        "TOTAL FINAL",
+        formatarMoedaPDF(
+            totalGeral
+        )
+    ]);
+
 
     doc.autoTable({
 
         startY:
             finalY,
 
+        margin: {
+            left: 105,
+            right: margem
+        },
+
+        tableWidth:
+            91,
 
         theme:
             "grid",
 
-
-        body: [
-
-            [
-
-                "TOTAL:",
-
-                formatarMoedaPDF(
-                    subtotalProdutos
-                )
-
-            ],
-
-
-            [
-
-                "FRETE:",
-
-                formatarMoedaPDF(
-                    frete
-                )
-
-            ],
-
-
-            [
-
-                "TAXA LINK (6%):",
-
-                formatarMoedaPDF(
-                    acrescimoLink
-                )
-
-            ],
-
-
-            [
-
-                "TAXA NF (4%):",
-
-                formatarMoedaPDF(
-                    acrescimoNF
-                )
-
-            ],
-
-
-            [
-
-                "TOTAL:",
-
-                formatarMoedaPDF(
-                    totalGeral
-                )
-
-            ]
-
-        ],
+        body:
+            linhasFinanceiro,
 
 
         styles: {
@@ -2905,8 +3027,19 @@ y = 124;
                 "helvetica",
 
             fontSize:
-                11
+                9,
 
+            textColor:
+                PRETO,
+
+            cellPadding:
+                3,
+
+            lineColor:
+                [210, 210, 210],
+
+            lineWidth:
+                0.2
         },
 
 
@@ -2914,20 +3047,21 @@ y = 124;
 
             0: {
 
-                fontStyle:
-                    "bold",
+                cellWidth:
+                    55,
+
 
                 halign:
-                    "center"
-
+                    "left"
             },
-
 
             1: {
 
+                cellWidth:
+                    36,
+
                 halign:
                     "right"
-
             }
 
         },
@@ -2937,24 +3071,26 @@ y = 124;
             function(data) {
 
                 /*
-                   Primeira e última linha
-                   recebem destaque.
+                   Somente o TOTAL FINAL
+                   recebe destaque.
                 */
 
                 if (
-                    data.row.index === 0 ||
-                    data.row.index === 4
+                    data.row.index ===
+                    linhasFinanceiro.length - 1
                 ) {
 
                     data.cell.styles.fillColor =
-                        BEGE;
+                        MARROM;
 
                     data.cell.styles.textColor =
-                        MARROM;
+                        BRANCO;
 
                     data.cell.styles.fontStyle =
                         "bold";
 
+                    data.cell.styles.fontSize =
+                        10;
                 }
 
             }
@@ -2962,34 +3098,56 @@ y = 124;
     });
 
 
+    /*
+    ===========================================================
+       POSIÇÃO APÓS RESUMO
+    ===========================================================
+    */
+
     finalY =
         doc.lastAutoTable.finalY +
-        10;
+        8;
 
 
-    /* =======================================================
+    /*
+    ===========================================================
        ENTREGA E PAGAMENTO
-    ======================================================= */
+    ===========================================================
+    */
+
+    if (
+        finalY > 245
+    ) {
+
+        doc.addPage();
+
+        finalY =
+            20;
+    }
+
+
+    doc.setTextColor(
+        ...MARROM
+    );
 
     doc.setFont(
         "helvetica",
         "bold"
     );
 
-
     doc.setFontSize(
-        12
+        11
     );
-
 
     doc.text(
         "ENTREGA E PAGAMENTO",
-        14,
+        margem,
         finalY
     );
 
 
-    finalY += 8;
+    finalY +=
+        7;
 
 
     doc.setFont(
@@ -2997,9 +3155,12 @@ y = 124;
         "normal"
     );
 
+    doc.setTextColor(
+        ...PRETO
+    );
 
     doc.setFontSize(
-        10
+        9.5
     );
 
 
@@ -3009,23 +3170,25 @@ y = 124;
             tipoFrete ||
             "-"
         ),
-        14,
+        margem,
         finalY
     );
 
 
-    finalY += 6;
+    finalY +=
+        5.5;
 
 
     doc.text(
         "Pagamento: " +
         pagamentoFormatado,
-        14,
+        margem,
         finalY
     );
 
 
-    finalY += 6;
+    finalY +=
+        5.5;
 
 
     doc.setFont(
@@ -3033,35 +3196,30 @@ y = 124;
         "bold"
     );
 
-
     doc.text(
-        "PEDIDO " +
+        "Pedido: " +
         dataPedidoFormatada +
-        " - POSTAGEM " +
+        "  |  Data Prevista para Postagem: " +
         dataPostagemFormatada,
-        14,
+        margem,
         finalY
     );
 
 
-    doc.setFont(
-        "helvetica",
-        "normal"
-    );
+    finalY +=
+        9;
 
 
-    finalY += 12;
-
-
-    /* =======================================================
+    /*
+    ===========================================================
        PARCELAMENTO
-    ======================================================= */
+    ===========================================================
+    */
 
     const datasParcelas =
         document.querySelectorAll(
             ".dataParcela"
         );
-
 
     const valoresParcelas =
         document.querySelectorAll(
@@ -3095,7 +3253,6 @@ y = 124;
                         formatarDataPDF(
                             campoData.value
                         );
-
                 }
 
 
@@ -3123,11 +3280,58 @@ y = 124;
         );
 
 
+        /*
+           Se o parcelamento começar
+           muito baixo, cria nova página.
+        */
+
+        if (
+            finalY > 245
+        ) {
+
+            doc.addPage();
+
+            finalY =
+                20;
+        }
+
+
+        doc.setTextColor(
+            ...MARROM
+        );
+
+        doc.setFont(
+            "helvetica",
+            "bold"
+        );
+
+        doc.setFontSize(
+            11
+        );
+
+        doc.text(
+            "PARCELAMENTO",
+            margem,
+            finalY
+        );
+
+
+        finalY +=
+            4;
+
+
         doc.autoTable({
 
             startY:
                 finalY,
 
+            margin: {
+                left: margem,
+                right: margem
+            },
+
+            tableWidth:
+                100,
 
             head: [[
 
@@ -3139,10 +3343,8 @@ y = 124;
 
             ]],
 
-
             body:
                 linhasParcelas,
-
 
             theme:
                 "grid",
@@ -3163,11 +3365,10 @@ y = 124;
                     "bold",
 
                 fontSize:
-                    10,
+                    9,
 
                 halign:
                     "center"
-
             },
 
 
@@ -3177,14 +3378,13 @@ y = 124;
                     "helvetica",
 
                 fontSize:
-                    10,
+                    9,
 
                 textColor:
                     PRETO,
 
                 halign:
                     "center"
-
             },
 
 
@@ -3200,98 +3400,97 @@ y = 124;
 
         finalY =
             doc.lastAutoTable.finalY +
-            12;
+            8;
 
     }
 
-
-    /* =======================================================
-       OBSERVAÇÕES
-    ======================================================= */
 
     /*
-       Caso o conteúdo esteja muito baixo
-       na página, cria uma nova página.
+    ===========================================================
+       OBSERVAÇÕES
+       
+       NÃO É MAIS IMPRESSO NO PDF.
+       O campo continua existindo no sistema.
+    ===========================================================
     */
 
-    if (
-        finalY > 255
-    ) {
 
-        doc.addPage();
-
-        finalY =
-            20;
-
-    }
-
-
-    doc.setFont(
-        "helvetica",
-        "bold"
-    );
-
-
-    doc.setFontSize(
-        12
-    );
-
-
-    doc.text(
-        "OBSERVAÇÕES",
-        14,
-        finalY
-    );
-
-
-    finalY += 8;
-
-
-    doc.setFont(
-        "helvetica",
-        "normal"
-    );
-
-
-    doc.setFontSize(
-        10
-    );
-
-
-    const texto =
-        doc.splitTextToSize(
-            observacao ||
-            "-",
-            180
-        );
-
-
-    doc.text(
-        texto,
-        14,
-        finalY
-    );
-
-
-    /* =======================================================
+    /*
+    ===========================================================
        SALVAR PDF
-    ======================================================= */
+    ===========================================================
+    */
 
     const nomeArquivo =
-    (cliente || "Cliente")
-        .trim()
-        .replace(/[\\/:*?"<>|]/g, "");
+        (cliente || "Cliente")
+            .trim()
+            .replace(
+                /[\\/:*?"<>|]/g,
+                ""
+            );
 
-doc.save(
-    "Orcamento_" +
-    nomeArquivo +
-    ".pdf"
+/*
+===========================================================
+    RODAPÉ - PITIKINHOS
+===========================================================
+*/
+
+const alturaPagina =
+    doc.internal.pageSize.getHeight();
+
+doc.setTextColor(
+    ...MARROM
+);
+
+doc.setFont(
+    "helvetica",
+    "normal"
+);
+
+// CNPJ
+doc.setFontSize(
+    16
+);
+
+doc.text(
+    "49.846.455/0001-11",
+    90,
+    alturaPagina - 7,
+    {
+        align: "center"
+    }
+);
+
+doc.setFontSize(
+    9
 );
 
 
-    /* =======================================================
+// Instagram
+doc.setFontSize(
+    16
+);
+
+doc.text(
+    "@pitikinhos_pet",
+    175,
+    alturaPagina - 7,
+    {
+        align: "center"
+    }
+);
+    doc.save(
+        "Orcamento_" +
+        nomeArquivo +
+        ".pdf"
+    );
+
+
+    /*
+    ===========================================================
        NOVO PEDIDO
-    ======================================================= */
+    ===========================================================
+    */
 
     salvarNumeroPedido();
 
@@ -3299,9 +3498,11 @@ doc.save(
     gerarNumeroPedido();
 
 
-    /* =======================================================
+    /*
+    ===========================================================
        REINICIA AS ETAPAS
-    ======================================================= */
+    ===========================================================
+    */
 
     etapaAtual =
         1;
@@ -3338,7 +3539,6 @@ doc.save(
 
         etapa1.style.display =
             "block";
-
     }
 
 
@@ -3346,7 +3546,6 @@ doc.save(
 
         etapa2.style.display =
             "none";
-
     }
 
 
@@ -3354,7 +3553,6 @@ doc.save(
 
         etapa3.style.display =
             "none";
-
     }
 
 
@@ -3362,7 +3560,6 @@ doc.save(
 
         etapa4.style.display =
             "none";
-
     }
 
 }
