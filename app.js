@@ -3201,7 +3201,7 @@ let y =
     doc.text(
         "Pedido: " +
         dataPedidoFormatada +
-        "  |  Data Prevista para Postagem: " +
+        "  |  Data Limite para Postagem: " +
         dataPostagemFormatada,
         margem,
         finalY
