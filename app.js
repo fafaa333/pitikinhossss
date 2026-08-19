@@ -3111,113 +3111,99 @@ let y =
         8;
 
 
-    /*
-    ===========================================================
-       ENTREGA E PAGAMENTO
-    ===========================================================
-    */
-
-    if (
-        finalY > 270
-    ) {
-
-        doc.addPage();
-
-        finalY =
-            20;
-    }
-
-
-    doc.setTextColor(
-        ...MARROM
-    );
-
-    doc.setFont(
-        "helvetica",
-        "bold"
-    );
-
-    doc.setFontSize(
-        11
-    );
-
-    doc.text(
-        "ENTREGA E PAGAMENTO",
-        margem,
-        finalY -= 6
-    );
-
-
-    finalY +=
-        7;
-
-
-    doc.setFont(
-        "helvetica",
-        "normal"
-    );
-
-    doc.setTextColor(
-        ...PRETO
-    );
-
-    doc.setFontSize(
-        9.5
-    );
-
-
-    doc.text(
-        "Entrega: " +
-        (
-            tipoFrete ||
-            "-"
-        ),
-        margem,
-        finalY
-    );
-
-
-    finalY +=
-        5.5;
-
-
-    doc.text(
-        "Pagamento: " +
-        pagamentoFormatado,
-        margem,
-        finalY
-    );
-
-
-    finalY +=
-        5.5;
-
-
-    doc.setFont(
-        "helvetica",
-        "bold"
-    );
-
-    doc.text(
-        "Pedido: " +
-        dataPedidoFormatada +
-        "  |  Data Limite para Postagem: " +
-        dataPostagemFormatada,
-        margem,
-        finalY
-    );
-
-
-    finalY +=
-        9;
-
 /*
+===========================================================
+   ENTREGA E PAGAMENTO
+===========================================================
+*/
+
+let entregaY = 235;
+let assinaturaY = 270;
+
+
+// TÍTULO
+doc.setTextColor(
+    ...MARROM
+);
+
+doc.setFont(
+    "helvetica",
+    "bold"
+);
+
+doc.setFontSize(
+    11
+);
+
+doc.text(
+    "ENTREGA E PAGAMENTO",
+    margem,
+    entregaY
+);
+
+
+// ENTREGA
+entregaY += 7;
+
+doc.setFont(
+    "helvetica",
+    "normal"
+);
+
+doc.setTextColor(
+    ...PRETO
+);
+
+doc.setFontSize(
+    9.5
+);
+
+doc.text(
+    "Entrega: " +
+    (
+        tipoFrete ||
+        "-"
+    ),
+    margem,
+    entregaY
+);
+
+
+// PAGAMENTO
+entregaY += 5.5;
+
+doc.text(
+    "Pagamento: " +
+    pagamentoFormatado,
+    margem,
+    entregaY
+);
+
+
+// PEDIDO / DATA
+entregaY += 5.5;
+
+doc.setFont(
+    "helvetica",
+    "bold"
+);
+
+doc.text(
+    "Pedido: " +
+    dataPedidoFormatada +
+    "  |  Data Limite para Postagem: " +
+    dataPostagemFormatada,
+    margem,
+    entregaY
+);
+
+
+/* ESPAÇO ANTES DAS ASSINATURAS
 ===========================================================
    ASSINATURAS
 ===========================================================
 */
 
-const assinaturaY = 270;
 
 // Linha da assinatura — lado esquerdo
 doc.setDrawColor(
