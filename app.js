@@ -2589,7 +2589,7 @@ doc.setFontSize(
 doc.text(
     "PEDIDO Nº " + (numeroPedido || "-"),
     165,
-    60,
+    65,
     {
         align: "center"
     }
