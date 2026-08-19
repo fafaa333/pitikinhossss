@@ -2421,6 +2421,7 @@ const logo =
         "img.logo"
     );
 
+const logoDataURL = await obterLogoDataURL();
 
 if (
     logo &&
@@ -2428,7 +2429,6 @@ if (
     logo.naturalWidth > 0
 ) {
 
-const logoDataURL = await obterLogoDataURL();
 if (logoDataURL) {
     doc.addImage(
         logoDataURL,
@@ -3144,7 +3144,7 @@ let y =
     doc.text(
         "ENTREGA E PAGAMENTO",
         margem,
-        finalY
+        finalY -= 8
     );
 
 
@@ -3275,6 +3275,20 @@ doc.text(
         align: "center"
     }
 );
+
+/*
+LOGO CANTO INFERIOR ESQUERDO
+*/
+if (logoDataURL) {
+    doc.addImage(
+        logoDataURL,
+        "PNG",
+        3,   // X → esquerda
+        275,  // Y → altura
+        35,   // largura
+        21    // altura
+    );
+}
     /*
     ===========================================================
        PARCELAMENTO
@@ -3519,7 +3533,7 @@ doc.setFontSize(
 
 doc.text(
     "49.846.455/0001-11",
-    90,
+    105,
     alturaPagina - 7,
     {
         align: "center"
