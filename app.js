@@ -2589,7 +2589,7 @@ doc.setFontSize(
 doc.text(
     "PEDIDO Nº " + (numeroPedido || "-"),
     165,
-    85,
+    60,
     {
         align: "center"
     }
@@ -2617,7 +2617,7 @@ doc.setFontSize(
 doc.text(
     "DADOS DO CLIENTE",
     20,
-    58
+    40
 );
 
 
@@ -2642,7 +2642,7 @@ doc.setFontSize(
 
 
 let clienteY =
-    68;
+    45;
 
 
 doc.text(
@@ -2698,7 +2698,7 @@ doc.text(
     "CEP: " +
     (cep || "-"),
     105,
-    clienteY - 12
+    clienteY - 9
 );
 
 
@@ -2729,7 +2729,7 @@ doc.text(
 ===========================================================
 */
 let y =
-    90;
+    68;
 
 
     /*
@@ -2796,12 +2796,18 @@ let y =
        TABELA DE PRODUTOS
     ===========================================================
     */
+    let tamanhoFonteProdutos = 9;
 
+    if (produtos.length >= 15) {
+    tamanhoFonteProdutos = 7;
+    } else if (produtos.length >= 12) {
+    tamanhoFonteProdutos = 8;
+    }
     doc.autoTable({
 
         startY:
             y,
-
+        pageBreak: "avoid",
         margin: {
             left: margem,
             right: margem
@@ -2841,7 +2847,7 @@ let y =
                 "bold",
 
             fontSize:
-                9,
+                tamanhoFonteProdutos,
 
             halign:
                 "center",
@@ -2852,12 +2858,8 @@ let y =
 
 
         bodyStyles: {
-
-            font:
-                "helvetica",
-
-            fontSize:
-                9,
+            font: "helvetica",
+            fontSize: tamanhoFonteProdutos,
 
             textColor:
                 PRETO,
@@ -3116,7 +3118,7 @@ let y =
     */
 
     if (
-        finalY > 245
+        finalY > 270
     ) {
 
         doc.addPage();
@@ -3209,7 +3211,70 @@ let y =
     finalY +=
         9;
 
+/*
+===========================================================
+   ASSINATURAS
+===========================================================
+*/
 
+const assinaturaY = 270;
+
+// Linha da assinatura — lado esquerdo
+doc.setDrawColor(
+    0,
+    0,
+    0
+);
+
+doc.setLineWidth(
+    0.5
+);
+
+doc.line(
+    20,
+    assinaturaY,
+    90,
+    assinaturaY
+);
+
+// Linha da assinatura — lado direito
+doc.line(
+    120,
+    assinaturaY,
+    190,
+    assinaturaY
+);
+
+doc.setFont(
+    "helvetica",
+    "normal"
+);
+
+doc.setFontSize(
+    8
+);
+
+doc.setTextColor(
+    ...MARROM
+);
+
+doc.text(
+    "Assinatura Responsável pelo recebimento",
+    55,
+    assinaturaY + 5,
+    {
+        align: "center"
+    }
+);
+
+doc.text(
+    "Assinatura Responsável Entrega Pitikinhos",
+    155,
+    assinaturaY + 5,
+    {
+        align: "center"
+    }
+);
     /*
     ===========================================================
        PARCELAMENTO
