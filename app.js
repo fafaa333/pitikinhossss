@@ -3144,7 +3144,7 @@ let y =
     doc.text(
         "ENTREGA E PAGAMENTO",
         margem,
-        finalY -= 8
+        finalY -= 6
     );
 
 
